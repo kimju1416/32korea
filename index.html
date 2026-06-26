@@ -40,7 +40,8 @@
       linear-gradient(180deg,var(--bg2),var(--bg) 30%);
     background-attachment:fixed;
     font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Roboto,sans-serif;
-    line-height:1.5;padding-bottom:40px;-webkit-font-smoothing:antialiased}
+    line-height:1.55;padding-bottom:40px;-webkit-font-smoothing:antialiased;
+    word-break:keep-all;overflow-wrap:break-word}
   .wrap{max-width:500px;margin:0 auto;padding:18px 14px}
 
   .head{text-align:center;padding:12px 4px 2px}
@@ -213,6 +214,26 @@
   .match.swept,.match.swept-lose{animation:presspop .36s ease}
   .match.swept .sweep{display:block;animation:sweepmove .6s ease;background:linear-gradient(100deg,transparent,rgba(10,143,79,.4),transparent)}
   .match.swept-lose .sweep{display:block;animation:sweepmove .6s ease;background:linear-gradient(100deg,transparent,rgba(205,46,58,.36),transparent)}
+
+  /* ===== PC 와이드 2단 레이아웃 (경기는 그대로 순차) ===== */
+  @media (min-width:880px){
+    .wrap{max-width:1120px;padding:28px 24px}
+    .head{padding:6px 0 4px}
+    .head h1{font-size:33px}
+    .head .kicker{font-size:11.5px}
+    .layout{display:grid;grid-template-columns:368px 1fr;gap:28px;align-items:start}
+    .side{position:sticky;top:18px}
+    .side>.hero{margin:0 0 16px}
+    .side>#prog{margin:0 0 16px}
+    .side>.card{margin:0}
+    .main>*{margin:0 0 18px}
+    .main #list .dateband:first-child{margin-top:2px}
+    .stickybar{display:none}            /* 사이드바에 진행률이 항상 보이므로 상단바 숨김 */
+    .hero .big{font-size:22px}
+    .dateband{margin:8px 2px 8px}        /* 첫 줄 간격 정리 */
+    .dateband:not(:first-child){margin-top:22px}
+    /* 경기 카드는 한 컬럼 유지(순차) — 그리드 적용 안 함 */
+  }
 </style>
 </head>
 <body>
@@ -231,10 +252,13 @@
     <h1><svg viewBox="0 0 100 100" width="28" height="28" style="vertical-align:-6px;margin-right:7px" aria-label="태극기"><circle cx="50" cy="50" r="46" fill="#fff"/><g transform="rotate(-90 50 50)"><path d="M50,5 a45,45 0 0 1 0,90 a22.5,22.5 0 0 1 0,-45 a22.5,22.5 0 0 0 0,-45 z" fill="#CD2E3A"/><path d="M50,5 a45,45 0 0 0 0,90 a22.5,22.5 0 0 0 0,-45 a22.5,22.5 0 0 1 0,-45 z" fill="#0047A0"/></g></svg>대한민국, 32강 갈까?</h1>
   </div>
 
+  <div class="layout">
+  <aside class="side">
+
   <div class="hero">
     <svg class="htg" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#fff"/><g transform="rotate(-90 50 50)"><path d="M50,5 a45,45 0 0 1 0,90 a22.5,22.5 0 0 1 0,-45 a22.5,22.5 0 0 0 0,-45 z" fill="#CD2E3A"/><path d="M50,5 a45,45 0 0 0 0,90 a22.5,22.5 0 0 0 0,-45 a22.5,22.5 0 0 1 0,-45 z" fill="#0047A0"/></g></svg>
     <div class="big">남은 6경기 중<br><b>단 3개</b>만 한국 편이면<br>32강 진출!</div>
-    <div class="sub">한국은 A조 3위로 종료 — 이미 위에 4팀이라,<br>6경기 중 3개만 우리 편이면 8위 안에 듭니다.</div>
+    <div class="sub">한국은 A조 3위로 종료 — 이미 위에 4팀이라, 6경기 중 3개만 우리 편이면 8위 안에 듭니다.</div>
   </div>
 
   <div id="prog" class="wait">
@@ -262,7 +286,9 @@
       <button class="btn blue" onclick="shareLink()">🔗 링크 공유</button>
     </div>
   </div>
+  </aside>
 
+  <main class="main">
   <div id="list"></div>
 
   <div class="card">
@@ -293,6 +319,8 @@
     </div>
     <div id="rankList"></div>
     <div class="rk-verdict" id="rankVerdict"></div>
+  </div>
+  </main>
   </div>
 
   <div class="foot">
