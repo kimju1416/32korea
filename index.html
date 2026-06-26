@@ -8,7 +8,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kimju1416.github.io/32korea/">
 <meta property="og:title" content="🇰🇷 대한민국 32강 진출 경우의 수 — 3개만 맞으면 진출!">
-<meta property="og:description" content="남은 6경기 결과만 체크하면 한국 16강 진출 여부가 실시간으로! 한국시간 일정·각 조 유리 조건·3위 8팀 진출 현황까지 한눈에.">
+<meta property="og:description" content="남은 6경기 결과만 체크하면 한국 32강 진출 여부가 실시간으로! 한국시간 일정·각 조 유리 조건·3위 8팀 진출 현황까지 한눈에.">
 <meta property="og:image" content="https://kimju1416.github.io/32korea/og-image.png">
 <meta property="og:image:width" content="1731">
 <meta property="og:image:height" content="909">
@@ -53,7 +53,7 @@
   .hero{position:relative;border-radius:22px;padding:28px 18px;margin:18px 0;text-align:center;overflow:hidden;
     background:linear-gradient(135deg,var(--kr-red) 0%,#b3202d 48%,var(--kr-blue) 100%);border:none;color:#fff;
     box-shadow:0 20px 50px -20px rgba(205,46,58,.55)}
-  .hero::before{content:"🇰🇷";position:absolute;left:-14px;top:-18px;font-size:90px;opacity:.16;transform:rotate(-10deg)}
+  .hero .htg{position:absolute;left:-14px;top:-16px;width:94px;height:94px;opacity:.18;transform:rotate(-12deg);pointer-events:none}
   .hero::after{content:"⚽";position:absolute;right:-8px;bottom:-20px;font-size:96px;opacity:.16;transform:rotate(-12deg)}
   .hero .big{position:relative;font-size:21px;font-weight:900;letter-spacing:-.4px;line-height:1.5;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.18)}
   .hero .big b{display:inline-block;font-size:34px;color:#ffe14d;-webkit-text-fill-color:#ffe14d;text-shadow:0 3px 14px rgba(0,0,0,.25)}
@@ -228,10 +228,11 @@
 
   <div class="head">
     <div class="kicker">FIFA World Cup 2026 · 32강 시나리오</div>
-    <h1>🇰🇷 대한민국, 16강 갈까?</h1>
+    <h1><svg viewBox="0 0 100 100" width="28" height="28" style="vertical-align:-6px;margin-right:7px" aria-label="태극기"><circle cx="50" cy="50" r="46" fill="#fff"/><g transform="rotate(-90 50 50)"><path d="M50,5 a45,45 0 0 1 0,90 a22.5,22.5 0 0 1 0,-45 a22.5,22.5 0 0 0 0,-45 z" fill="#CD2E3A"/><path d="M50,5 a45,45 0 0 0 0,90 a22.5,22.5 0 0 0 0,-45 a22.5,22.5 0 0 1 0,-45 z" fill="#0047A0"/></g></svg>대한민국, 32강 갈까?</h1>
   </div>
 
   <div class="hero">
+    <svg class="htg" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#fff"/><g transform="rotate(-90 50 50)"><path d="M50,5 a45,45 0 0 1 0,90 a22.5,22.5 0 0 1 0,-45 a22.5,22.5 0 0 0 0,-45 z" fill="#CD2E3A"/><path d="M50,5 a45,45 0 0 0 0,90 a22.5,22.5 0 0 0 0,-45 a22.5,22.5 0 0 1 0,-45 z" fill="#0047A0"/></g></svg>
     <div class="big">남은 6경기 중<br><b>단 3개</b>만 한국 편이면<br>32강 진출!</div>
     <div class="sub">한국은 A조 3위로 종료 — 이미 위에 4팀이라,<br>6경기 중 3개만 우리 편이면 8위 안에 듭니다.</div>
   </div>
@@ -573,7 +574,7 @@ function buildResultCanvas(){
   x.fillStyle='#CD2E3A';x.fillRect(0,0,W,14); x.fillStyle='#0047A0';x.fillRect(0,14,W,8);
   x.textAlign='center';
   x.fillStyle='#0047A0';x.font='900 30px sans-serif';x.fillText('FIFA WORLD CUP 2026 · 32강 경우의 수',W/2,118);
-  x.fillStyle='#16213a';x.font='900 68px sans-serif';x.fillText('대한민국, 16강 갈까?',W/2,202);
+  x.fillStyle='#16213a';x.font='900 68px sans-serif';x.fillText('대한민국, 32강 갈까?',W/2,202);
   x.fillStyle=vc;x.font='900 66px sans-serif';x.fillText(v,W/2,316);
   const cols=[['성공',s,'#0a8f4f'],['실패',f,'#CD2E3A'],['미정',t,'#9aa4bb']];
   cols.forEach((cc,i)=>{const cx=W/2+(i-1)*306;
