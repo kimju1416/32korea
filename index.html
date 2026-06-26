@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대한민국 32강 진출 경우의 수 · 2026 월드컵</title>
+<!-- ===== 카카오톡 / SNS 미리보기 (Open Graph) ===== -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kimju1416.github.io/32korea/">
+<meta property="og:title" content="🇰🇷 대한민국 32강 진출 경우의 수 — 3개만 맞으면 진출!">
+<meta property="og:description" content="남은 6경기 결과만 체크하면 한국 16강 진출 여부가 실시간으로! 한국시간 일정·각 조 유리 조건·3위 8팀 진출 현황까지 한눈에.">
+<meta property="og:image" content="https://kimju1416.github.io/32korea/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="대한민국 32강 경우의 수">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="🇰🇷 대한민국 32강 진출 경우의 수">
+<meta name="twitter:description" content="남은 6경기 중 3개만 한국 편이면 32강! 실시간 체크.">
+<meta name="twitter:image" content="https://kimju1416.github.io/32korea/og-image.png">
+<style>
+  /* ===== 태극·국가대표 응원 테마 — 레드(#CD2E3A)·블루(#0047A0)·화이트 ===== */
+  :root{
+    --kr-red:#CD2E3A; --kr-red2:#e84855;
+    --kr-blue:#0047A0; --kr-blue2:#1565d8;
+    --bg:#f4f6fb; --bg2:#ffffff;
+    --card:#ffffff; --card-line:#e3e8f2;
+    --ink:#16213a; --sub:#5a6781; --mut:#9aa4bb;
+    --kr:#CD2E3A; --kr2:#e84855;
+    --good:#0a8f4f; --good-bg:#e6f7ee; --good-line:#a7e0c2;
+    --bad:#CD2E3A;  --bad-bg:#fdeaec;  --bad-line:#f3b9c0;
+    --gold:#c98a12; --gold-bg:#fff6e3; --gold-line:#f3d9a0;
+    --cyan:#0047A0;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;color:var(--ink);min-height:100vh;
+    background:
+      radial-gradient(700px 420px at 50% -6%, rgba(205,46,58,.10), transparent 60%),
+      radial-gradient(640px 420px at 100% 8%, rgba(0,71,160,.08), transparent 55%),
+      linear-gradient(180deg,var(--bg2),var(--bg) 30%);
+    background-attachment:fixed;
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Roboto,sans-serif;
+    line-height:1.5;padding-bottom:40px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:500px;margin:0 auto;padding:18px 14px}
+
+  .head{text-align:center;padding:12px 4px 2px}
+  .head .kicker{display:inline-block;font-size:10.5px;letter-spacing:.16em;color:#fff;font-weight:900;
+    background:linear-gradient(90deg,var(--kr-blue),var(--kr-red));padding:6px 14px;border-radius:999px;
+    text-transform:uppercase;box-shadow:0 8px 20px -10px rgba(205,46,58,.6)}
+  .head h1{font-size:27px;margin:14px 0 0;font-weight:900;letter-spacing:-.8px;
+    background:linear-gradient(90deg,var(--kr-blue),var(--kr-red));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  .hero{position:relative;border-radius:22px;padding:28px 18px;margin:18px 0;text-align:center;overflow:hidden;
+    background:linear-gradient(135deg,var(--kr-red) 0%,#b3202d 48%,var(--kr-blue) 100%);border:none;color:#fff;
+    box-shadow:0 20px 50px -20px rgba(205,46,58,.55)}
+  .hero::before{content:"🇰🇷";position:absolute;left:-14px;top:-18px;font-size:90px;opacity:.16;transform:rotate(-10deg)}
+  .hero::after{content:"⚽";position:absolute;right:-8px;bottom:-20px;font-size:96px;opacity:.16;transform:rotate(-12deg)}
+  .hero .big{position:relative;font-size:21px;font-weight:900;letter-spacing:-.4px;line-height:1.5;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.18)}
+  .hero .big b{display:inline-block;font-size:34px;color:#ffe14d;-webkit-text-fill-color:#ffe14d;text-shadow:0 3px 14px rgba(0,0,0,.25)}
+  .hero .sub{position:relative;font-size:12px;color:rgba(255,255,255,.92);margin-top:12px;line-height:1.6}
+
+  .card{background:var(--card);border:1px solid var(--card-line);border-radius:16px;padding:18px;margin:14px 0;
+    box-shadow:0 6px 22px -16px rgba(22,33,58,.35)}
+  .ttl{font-size:12.5px;font-weight:900;color:var(--ink);margin:0 0 14px;display:flex;align-items:center;gap:9px;letter-spacing:-.2px}
+  .ttl::before{content:"";width:5px;height:16px;border-radius:2px;background:linear-gradient(var(--kr-red),var(--kr-blue))}
+
+  /* PROGRESS */
+  #prog{position:relative;border-radius:20px;padding:24px 18px;border:2px solid;text-align:center;transition:.3s;overflow:hidden;background:#fff}
+  #prog.good{background:var(--good-bg);border-color:var(--good-line);box-shadow:0 18px 44px -24px var(--good)}
+  #prog.bad{background:var(--bad-bg);border-color:var(--bad-line);box-shadow:0 18px 44px -24px var(--kr-red)}
+  #prog.wait{background:var(--gold-bg);border-color:var(--gold-line)}
+  #progBig{font-size:29px;font-weight:900;letter-spacing:-.8px}
+  #prog.good #progBig{color:var(--good)} #prog.bad #progBig{color:var(--kr-red)} #prog.wait #progBig{color:var(--gold)}
+
+  .pdots{display:flex;justify-content:center;gap:8px;margin:16px 0 2px}
+  .pdot{width:30px;height:9px;border-radius:99px;background:#dde3ef;transition:.3s}
+  .pdot.on{background:var(--good);box-shadow:0 0 12px rgba(10,143,79,.6)}
+  .pneed{font-size:10.5px;color:var(--mut);margin-top:8px;font-weight:800;letter-spacing:.02em}
+
+  .counts{display:flex;justify-content:center;gap:9px;margin-top:16px}
+  .cnt{flex:1;max-width:130px;background:#f6f8fc;border:1px solid var(--card-line);border-radius:13px;padding:11px 4px}
+  .cnt .n{font-size:24px;font-weight:900;line-height:1}
+  .cnt .l{font-size:10px;color:var(--sub);font-weight:800;margin-top:5px}
+  .cnt.s .n{color:var(--good)} .cnt.f .n{color:var(--kr-red)} .cnt.t .n{color:var(--mut)}
+  #progMsg{font-size:13px;font-weight:800;margin-top:16px;line-height:1.55;color:var(--ink)}
+  #progMsg b{color:var(--kr-red)}
+
+  .why{background:#eef4fc;border:1px solid #cfe0f5;border-radius:13px;padding:13px 14px;font-size:12.5px;color:var(--sub);line-height:1.65}
+  .why b{color:var(--ink)}
+  .why .q{display:block;color:var(--kr-blue);font-weight:900;margin-bottom:6px;font-size:13px}
+
+  /* DATE GROUP — 강조 */
+  .dateband{display:flex;align-items:center;gap:11px;margin:28px 2px 8px}
+  .dateband .dt{font-size:19px;font-weight:900;letter-spacing:-.4px;color:var(--kr-blue);
+    position:relative;padding-left:14px;display:inline-flex;align-items:center}
+  .dateband .dt::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+    width:5px;height:22px;border-radius:3px;background:linear-gradient(var(--kr-red),var(--kr-blue))}
+  .dateband .ln{flex:1;height:2px;background:linear-gradient(90deg,var(--card-line),transparent)}
+  .dateband .cnt2{font-size:11px;color:#fff;font-weight:900;background:var(--kr-blue);padding:4px 11px;border-radius:99px}
+
+  /* MATCH CARD — 색띠 제거 */
+  .match{position:relative;background:#fff;border:1px solid var(--card-line);border-radius:16px;margin:11px 0;
+    overflow:hidden;transition:.25s;box-shadow:0 6px 20px -16px rgba(22,33,58,.4)}
+  .match.win{border-color:var(--good-line)} .match.lose{border-color:var(--bad-line)}
+  .mhead{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;border-bottom:1px solid var(--card-line);
+    background:linear-gradient(90deg,rgba(0,71,160,.05),rgba(205,46,58,.03))}
+  .mhead .gtag{font-size:11.5px;font-weight:900;background:linear-gradient(135deg,var(--kr-blue),var(--kr-blue2));
+    color:#fff;padding:4px 11px;border-radius:8px;border:none}
+  .mhead .t{font-size:13px;font-weight:900;color:var(--gold);letter-spacing:.02em;
+    background:var(--gold-bg);border:1px solid var(--gold-line);padding:5px 12px;border-radius:99px}
+  .mbody{padding:14px 15px 15px}
+  .vs{font-size:17px;font-weight:900;text-align:center;letter-spacing:-.3px;color:var(--ink)}
+  .vs .x{display:inline-grid;place-items:center;width:26px;height:26px;margin:0 9px;font-size:10px;font-weight:900;
+    color:#fff;background:var(--kr-red);border:none;border-radius:99px;vertical-align:middle}
+  .cond{margin-top:13px;background:var(--good-bg);border:1px solid var(--good-line);border-radius:12px;padding:11px 13px;font-size:12.5px;line-height:1.55}
+  .cond .k{font-size:10px;color:var(--good);font-weight:900;display:block;margin-bottom:3px;letter-spacing:.08em;text-transform:uppercase}
+  .cond .v{font-weight:800;color:var(--ink)}
+  .toggle{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:13px}
+  .tg{border:1.5px solid var(--card-line);background:#f6f8fc;border-radius:12px;padding:11px 4px;cursor:pointer;
+    text-align:center;font-size:13px;font-weight:900;color:var(--sub);transition:.15s}
+  .tg small{display:block;font-size:9.5px;font-weight:700;opacity:.8;margin-top:2px}
+  .tg.win.sel{border-color:var(--good);background:var(--good-bg);color:var(--good);box-shadow:0 0 18px -6px var(--good)}
+  .tg.lose.sel{border-color:var(--kr-red);background:var(--bad-bg);color:var(--kr-red);box-shadow:0 0 18px -6px var(--kr-red)}
+  .tg.tbd.sel{border-color:var(--kr-blue);background:#e9f0fb;color:var(--kr-blue)}
+  .tg:active{transform:scale(.96)}
+
+  .krrow{display:flex;align-items:center;gap:14px}
+  .krrow .badge{width:48px;height:48px;border-radius:14px;font-size:18px;font-weight:900;
+    background:linear-gradient(135deg,var(--kr-red),var(--kr-blue));color:#fff;display:grid;place-items:center;
+    box-shadow:0 10px 24px -10px var(--kr-red)}
+  .krrow b{font-size:15px;color:var(--ink)} .krrow div small{font-size:12px;color:var(--sub)}
+  .sectnote{font-size:12px;color:var(--sub);line-height:1.65;margin:14px 0 0}
+
+  .rule{display:flex;flex-direction:column;gap:11px}
+  .rc{display:flex;gap:13px;align-items:center;font-size:13px;color:var(--sub)}
+  .rc b{color:var(--ink)}
+  .rc .n{flex:none;width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--kr-blue),var(--kr-blue2));
+    border:none;color:#fff;font-size:13px;font-weight:900;display:grid;place-items:center;box-shadow:0 8px 18px -10px var(--kr-blue)}
+
+  .btn{width:100%;border:1.5px solid var(--kr-red);background:#fff;color:var(--kr-red);border-radius:12px;
+    padding:12px;font-size:12.5px;font-weight:900;cursor:pointer;margin-top:8px;transition:.15s}
+  .btn:active{background:var(--bad-bg);transform:scale(.98)}
+  .sharebtns{display:flex;gap:8px}
+  .sharebtns .btn{margin-top:8px}
+  .sharebtns .btn.blue{border-color:var(--kr-blue);color:var(--kr-blue)}
+  .sharebtns .btn.blue:active{background:#e9f0fb}
+
+  .foot{text-align:center;color:var(--mut);font-size:11px;margin-top:24px;line-height:1.8}
+  .foot .nostalgia{margin-top:16px;font-size:15px;font-weight:900;letter-spacing:-.3px;
+    background:linear-gradient(90deg,var(--kr-red),var(--gold),var(--kr-blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .foot .iglink{display:inline-flex;align-items:center;gap:7px;margin-top:11px;font-size:12.5px;font-weight:800;
+    color:#fff;text-decoration:none;padding:8px 16px;border-radius:99px;
+    background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+    box-shadow:0 8px 22px -10px #dc2743;transition:.18s}
+  .foot .iglink:active{transform:scale(.97)}
+
+  /* 3위 8팀 진출 현황표 (A안 — 근사) */
+  .rk-note{font-size:11.5px;color:#7a5a00;background:var(--gold-bg);border:1px solid var(--gold-line);
+    border-radius:11px;padding:11px 13px;line-height:1.65;margin-bottom:13px}
+  .rk-note b{color:var(--ink)}
+  .rk-row{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--card-line);
+    border-radius:11px;margin:6px 0;background:#fff}
+  .rk-row.kr{background:linear-gradient(90deg,rgba(205,46,58,.09),rgba(0,71,160,.07));border-color:var(--kr-red);
+    box-shadow:0 6px 18px -12px var(--kr-red)}
+  .rk-row .rkno{width:20px;text-align:center;font-weight:900;color:var(--mut);font-size:13px}
+  .rk-row.kr .rkno{color:var(--kr-red)}
+  .rk-row .gb{font-size:10px;font-weight:900;color:#fff;background:var(--kr-blue);padding:2px 7px;border-radius:6px;flex:none}
+  .rk-row .nm{font-weight:800;font-size:13.5px;flex:1;color:var(--ink)}
+  .rk-row .pts{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums;font-weight:700}
+  .rk-row .tag{font-size:10px;font-weight:900;padding:3px 9px;border-radius:99px;flex:none}
+  .tag.up{background:var(--bad-bg);color:var(--kr-red)}
+  .tag.dn{background:var(--good-bg);color:var(--good)}
+  .tag.pend{background:var(--gold-bg);color:var(--gold)}
+  .tag.krtag{background:linear-gradient(90deg,var(--kr-red),var(--kr-blue));color:#fff}
+  .rk-cut{display:flex;align-items:center;gap:8px;color:var(--kr-red);font-size:11px;font-weight:900;margin:11px 0}
+  .rk-cut .ln{flex:1;height:0;border-top:2px dashed var(--kr-red)}
+  .rk-zone{font-size:11px;font-weight:900;color:var(--mut);margin:15px 0 4px}
+  .rk-verdict{margin-top:14px;font-size:14px;font-weight:900;text-align:center;padding:13px;border-radius:12px}
+  .rk-verdict.in{background:var(--good-bg);color:var(--good)}
+  .rk-verdict.out{background:var(--bad-bg);color:var(--kr-red)}
+  .rk-verdict.mid{background:var(--gold-bg);color:var(--gold)}
+
+  /* ===== 효과 ===== */
+  /* (6) 스티키 요약 바 */
+  .stickybar{position:fixed;top:0;left:0;right:0;z-index:60;transform:translateY(-115%);
+    transition:transform .32s cubic-bezier(.4,0,.2,1);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    background:rgba(255,255,255,.88);border-bottom:1px solid var(--card-line);box-shadow:0 8px 22px -14px rgba(22,33,58,.45)}
+  .stickybar.show{transform:translateY(0)}
+  .stickybar .in{max-width:500px;margin:0 auto;padding:11px 16px;display:flex;align-items:center;gap:11px}
+  .stickybar .sdots{display:flex;gap:5px}
+  .stickybar .sd{width:17px;height:7px;border-radius:99px;background:#dde3ef;transition:.3s}
+  .stickybar .sd.on{background:var(--good);box-shadow:0 0 8px rgba(10,143,79,.55)}
+  .stickybar .stxt{font-size:13px;font-weight:900;color:var(--ink)}
+  .stickybar .stag{margin-left:auto;font-size:11px;font-weight:900;padding:4px 12px;border-radius:99px}
+  .stickybar .stag.good{background:var(--good-bg);color:var(--good)}
+  .stickybar .stag.bad{background:var(--bad-bg);color:var(--kr-red)}
+  .stickybar .stag.wait{background:var(--gold-bg);color:var(--gold)}
+
+  /* (1) 컨페티 + 진출 확정 글로우 / 탈락 페이드 */
+  #confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:95;display:none}
+  @keyframes goldpulse{0%{box-shadow:0 0 0 0 rgba(255,206,61,0)}
+    28%{box-shadow:0 0 70px 10px rgba(255,206,61,.75),0 18px 44px -24px var(--good)}
+    100%{box-shadow:0 0 0 0 rgba(255,206,61,0)}}
+  .celebrate{animation:goldpulse 1.9s ease-out}
+  @keyframes greyfade{0%{filter:none}45%{filter:grayscale(.92) brightness(.9)}100%{filter:none}}
+  .defeat{animation:greyfade 1.5s ease}
+
+  /* (4) 결과 마킹 스윕 + 눌림 */
+  .match .sweep{position:absolute;inset:0;z-index:4;pointer-events:none;display:none}
+  @keyframes sweepmove{0%{transform:translateX(-100%)}100%{transform:translateX(110%)}}
+  @keyframes presspop{0%{transform:scale(1)}38%{transform:scale(.975)}100%{transform:scale(1)}}
+  .match.swept,.match.swept-lose{animation:presspop .36s ease}
+  .match.swept .sweep{display:block;animation:sweepmove .6s ease;background:linear-gradient(100deg,transparent,rgba(10,143,79,.4),transparent)}
+  .match.swept-lose .sweep{display:block;animation:sweepmove .6s ease;background:linear-gradient(100deg,transparent,rgba(205,46,58,.36),transparent)}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="stickybar" id="sticky">
+  <div class="in">
+    <div class="sdots" id="sDots"></div>
+    <span class="stxt" id="sTxt">성공 0 / 3</span>
+    <span class="stag wait" id="sTag">진행 중</span>
+  </div>
+</div>
+<div class="wrap">
+
+  <div class="head">
+    <div class="kicker">FIFA World Cup 2026 · 32강 시나리오</div>
+    <h1>🇰🇷 대한민국, 16강 갈까?</h1>
+  </div>
+
+  <div class="hero">
+    <div class="big">남은 6경기 중<br><b>단 3개</b>만 한국 편이면<br>32강 진출!</div>
+    <div class="sub">한국은 A조 3위로 종료 — 이미 위에 4팀이라,<br>6경기 중 3개만 우리 편이면 8위 안에 듭니다.</div>
+  </div>
+
+  <div id="prog" class="wait">
+    <div id="progBig"></div>
+    <div class="pdots" id="pdots"></div>
+    <div class="pneed">진출 라인 · 성공 3개</div>
+    <div class="counts">
+      <div class="cnt s"><div class="n" id="cS">0</div><div class="l">성공 · 한국 편</div></div>
+      <div class="cnt f"><div class="n" id="cF">0</div><div class="l">실패 · 추월당함</div></div>
+      <div class="cnt t"><div class="n" id="cT">6</div><div class="l">미정 · 경기 전</div></div>
+    </div>
+    <div id="progMsg"></div>
+  </div>
+
+  <div class="card">
+    <div class="why">
+      <span class="q">❓ 왜 하필 3개일까?</span>
+      한국(승점3·−1) 위로 이미 끝난 3위 팀이 <b>4팀</b>(보스니아·파라과이·에콰도르·스웨덴).
+      3위 8팀이 진출하니, 남은 6개 조 중 한국을 넘는 팀이 <b>3팀 이하</b>여야 합니다 →
+      바꿔 말해 <b>3경기 이상에서 한국에 유리한 결과</b>가 나오면 진출.
+    </div>
+    <button class="btn" onclick="resetAll()">↺ 전부 ‘미정’으로 초기화</button>
+    <div class="sharebtns">
+      <button class="btn" onclick="saveImage()">📷 결과 이미지 저장</button>
+      <button class="btn blue" onclick="shareLink()">🔗 링크 공유</button>
+    </div>
+  </div>
+
+  <div id="list"></div>
+
+  <div class="card">
+    <div class="ttl">대한민국 — A조 3위 (경기 종료)</div>
+    <div class="krrow">
+      <div class="badge">A</div>
+      <div><b>1승 0무 2패 · 승점 3</b><div><small>득점 2 · 실점 3 · 골득실 −1</small></div></div>
+    </div>
+    <p class="sectnote">체코 2:1 승 · 멕시코 0:1 패 · 남아공 0:1 패 — 멕시코·남아공에 밀려 3위.</p>
+  </div>
+
+  <div class="card">
+    <div class="ttl">3위 팀 진출 규칙</div>
+    <div class="rule">
+      <div class="rc"><span class="n">48</span><div>개국이 <b>4팀씩 12개 조</b>로 조별리그</div></div>
+      <div class="rc"><span class="n">24</span><div>각 조 <b>1·2위</b>는 자동 32강행</div></div>
+      <div class="rc"><span class="n">8</span><div>각 조 <b>3위 12팀 중 상위 8팀</b>이 마지막 티켓</div></div>
+    </div>
+    <p class="sectnote">순위 기준: <b>승점 → 골득실 → 다득점</b>. 유리 조건은 골 차이까지 계산한 값입니다 (무승부 시 득점 수에 따라 미세하게 달라질 수 있음).</p>
+  </div>
+
+  <div class="card">
+    <div class="ttl">🏆 3위 8팀 진출 현황 (잠정)</div>
+    <div class="rk-note">
+      ⚠️ <b>정확한 1~12위 순서는 아닙니다.</b> ‘한국보다 위/아래’만 확정이고, 같은 구역(특히 한국 위)
+      안에서의 정확한 순서는 실제 골득실로 갈립니다. 미정 경기를 성공/실패로 체크하면 표가 채워집니다.<br>
+      <b>득실 표시(예: 4점·0)</b>가 있으면 경기 종료 확정값, <b>‘—’</b>는 결과에 따른 예상 구역입니다.
+    </div>
+    <div id="rankList"></div>
+    <div class="rk-verdict" id="rankVerdict"></div>
+  </div>
+
+  <div class="foot">
+    12개 조 순위·결과 Wikipedia 검증 (2026.06.26 기준) · 시간은 한국시간(KST)<br>
+    경기 결과가 나오면 성공/실패를 눌러 체크하세요.
+    <div class="nostalgia">2002년 월드컵 그리워 ㅠㅠ</div>
+    <a class="iglink" href="https://instagram.com/kimju.zip" target="_blank" rel="noopener">📷 @kimju.zip</a>
+  </div>
+</div>
+
+<script>
+/* 배포 후 이 페이지 주소가 공유 링크가 됩니다. 특정 도메인으로 고정하려면 아래 값을 바꾸세요. */
+const APP_URL = (location.protocol==='http:'||location.protocol==='https:') ? location.href : '';
+
+const KR={pts:3,gd:-1,gf:2};
+function aboveKR(t){
+  if(t.pts!==KR.pts)return t.pts>KR.pts;
+  if(t.gd!==KR.gd)  return t.gd>KR.gd;
+  return t.gf>KR.gf;
+}
+const lockedAbove=4;
+const NEED=3;
+
+const GROUPS=[
+ {id:'I',g:'I조',date:'6월 27일',dow:'토',kst:'04:00',state:'tbd',
+  teams:{FRA:{name:'프랑스',pts:6,gf:6,ga:1}, NOR:{name:'노르웨이',pts:6,gf:7,ga:3},
+         SEN:{name:'세네갈',pts:0,gf:3,ga:6}, IRQ:{name:'이라크',pts:0,gf:1,ga:7}},
+  fx:[{h:'NOR',a:'FRA'},{h:'SEN',a:'IRQ'}]},
+ {id:'H',g:'H조',date:'6월 27일',dow:'토',kst:'09:00',state:'tbd',
+  teams:{ESP:{name:'스페인',pts:4,gf:4,ga:0}, URU:{name:'우루과이',pts:2,gf:3,ga:3},
+         CPV:{name:'카보베르데',pts:2,gf:2,ga:2}, SAU:{name:'사우디',pts:1,gf:1,ga:5}},
+  fx:[{h:'CPV',a:'SAU'},{h:'URU',a:'ESP'}]},
+ {id:'G',g:'G조',date:'6월 27일',dow:'토',kst:'12:00',state:'tbd',
+  teams:{EGY:{name:'이집트',pts:4,gf:4,ga:2}, IRN:{name:'이란',pts:2,gf:2,ga:2},
+         BEL:{name:'벨기에',pts:2,gf:1,ga:1}, NZL:{name:'뉴질랜드',pts:1,gf:3,ga:5}},
+  fx:[{h:'EGY',a:'IRN'},{h:'NZL',a:'BEL'}]},
+ {id:'L',g:'L조',date:'6월 28일',dow:'일',kst:'06:00',state:'tbd',
+  teams:{ENG:{name:'잉글랜드',pts:4,gf:4,ga:2}, GHA:{name:'가나',pts:4,gf:1,ga:0},
+         CRO:{name:'크로아티아',pts:3,gf:3,ga:4}, PAN:{name:'파나마',pts:0,gf:0,ga:2}},
+  fx:[{h:'PAN',a:'ENG'},{h:'CRO',a:'GHA'}]},
+ {id:'K',g:'K조',date:'6월 28일',dow:'일',kst:'08:30',state:'tbd',
+  teams:{COL:{name:'콜롬비아',pts:6,gf:4,ga:1}, POR:{name:'포르투갈',pts:4,gf:6,ga:1},
+         COD:{name:'콩고',pts:1,gf:1,ga:2}, UZB:{name:'우즈베키스탄',pts:0,gf:1,ga:8}},
+  fx:[{h:'COL',a:'POR'},{h:'COD',a:'UZB'}]},
+ {id:'J',g:'J조',date:'6월 28일',dow:'일',kst:'11:00',state:'tbd',
+  teams:{ARG:{name:'아르헨티나',pts:6,gf:5,ga:0}, AUT:{name:'오스트리아',pts:3,gf:3,ga:3},
+         ALG:{name:'알제리',pts:3,gf:2,ga:4}, JOR:{name:'요르단',pts:0,gf:2,ga:5}},
+  fx:[{h:'ALG',a:'AUT'},{h:'JOR',a:'ARG'}]},
+];
+
+/* 이미 끝난 조(A~F) 3위 팀 — 정확한 값 (Wikipedia 검증) */
+const lockedThirds=[
+  {g:'B조',name:'보스니아',pts:4,gd:-1,gf:5},
+  {g:'D조',name:'파라과이',pts:4,gd:-2,gf:2},
+  {g:'E조',name:'에콰도르',pts:4,gd:0, gf:2},
+  {g:'F조',name:'스웨덴',  pts:4,gd:0, gf:7},
+  {g:'C조',name:'스코틀랜드',pts:3,gd:-3,gf:1},
+];
+
+function thirdOf(g){
+  const t={};
+  for(const k in g.teams){const o=g.teams[k];t[k]={name:o.name,pts:o.pts,gf:o.gf,ga:o.ga};}
+  g.fx.forEach(f=>{
+    t[f.h].gf+=f.hs;t[f.h].ga+=f.as; t[f.a].gf+=f.as;t[f.a].ga+=f.hs;
+    if(f.hs>f.as)t[f.h].pts+=3; else if(f.hs<f.as)t[f.a].pts+=3; else{t[f.h].pts++;t[f.a].pts++;}
+  });
+  const arr=Object.values(t).map(x=>({...x,gd:x.gf-x.ga}));
+  arr.sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+  return arr[2];
+}
+function safeWith(g){ return !aboveKR(thirdOf(g)); }
+function favWin(g,i){const f=g.fx[i],H=g.teams[f.h],A=g.teams[f.a]; if(H.pts>=A.pts){f.hs=1;f.as=0;}else{f.hs=0;f.as=1;}}
+function setSc(g,i,h,a){g.fx[i].hs=h;g.fx[i].as=a;}
+
+const DEC={I:1,H:1,G:0,L:1,K:1,J:0};
+function favorableCondition(g){
+  const snap=g.fx.map(f=>({hs:f.hs,as:f.as}));
+  const dec=DEC[g.id];
+  g.fx.forEach((f,j)=>{if(j!==dec)favWin(g,j);});
+  const f=g.fx[dec],H=g.teams[f.h].name,A=g.teams[f.a].name;
+  setSc(g,dec,1,1);const drawSafe=safeWith(g);
+  const homeS=[],awayS=[];
+  for(let m=1;m<=9;m++){setSc(g,dec,m,0);if(safeWith(g))homeS.push(m);}
+  for(let m=1;m<=9;m++){setSc(g,dec,0,m);if(safeWith(g))awayS.push(m);}
+  const parts=[];
+  const ph=summ(H,homeS); if(ph)parts.push(ph);
+  if(drawSafe)parts.push('무승부');
+  const pa=summ(A,awayS); if(pa)parts.push(pa);
+  g.fx.forEach((ff,i)=>{ff.hs=snap[i].hs;ff.as=snap[i].as;});
+  return {match:H+' vs '+A, text: parts.length?parts.join(' 또는 '):'한국이 안전한 결과 거의 없음'};
+}
+function summ(name,arr){
+  if(!arr.length)return null;
+  if(arr.length>=9)return name+' 승';
+  const min=arr[0],max=arr[arr.length-1],contig=arr.length===(max-min+1);
+  if(contig&&min===1)return `${name} ${max}점차 이내 승`;
+  if(contig&&max>=9)return `${name} ${min}점차 이상 승`;
+  return `${name} ${min}~${max}점차 승`;
+}
+GROUPS.forEach(g=>{ const c=favorableCondition(g); g.matchLabel=c.match||(g.teams[g.fx[0].h].name+' vs '+g.teams[g.fx[0].a].name); g.condText=c.text; });
+
+function render(){
+  const list=document.getElementById('list'); list.innerHTML='';
+  let lastDate='';
+  GROUPS.forEach(g=>{
+    if(g.date!==lastDate){
+      lastDate=g.date;
+      const cntInDate=GROUPS.filter(x=>x.date===g.date).length;
+      const band=document.createElement('div'); band.className='dateband';
+      band.innerHTML=`<span class="dt">${g.date} (${g.dow})</span><span class="ln"></span><span class="cnt2">${cntInDate}경기</span>`;
+      list.appendChild(band);
+    }
+    const el=document.createElement('div'); el.className='match '+(g.state==='tbd'?'':g.state); el.dataset.id=g.id;
+    el.innerHTML=`
+      <div class="sweep"></div>
+      <div class="mhead"><span class="gtag">${g.g}</span><span class="t">🕐 ${g.kst} KST</span></div>
+      <div class="mbody">
+        <div class="vs">${g.matchLabel.replace(' vs ','<span class="x">VS</span>')}</div>
+        <div class="cond"><span class="k">한국에 유리한 결과</span><span class="v">${g.condText}</span></div>
+        <div class="toggle" data-id="${g.id}">
+          <div class="tg win ${g.state==='win'?'sel':''}" data-s="win">성공<small>한국 편</small></div>
+          <div class="tg lose ${g.state==='lose'?'sel':''}" data-s="lose">실패<small>추월</small></div>
+          <div class="tg tbd ${g.state==='tbd'?'sel':''}" data-s="tbd">미정<small>경기 전</small></div>
+        </div>
+      </div>`;
+    list.appendChild(el);
+  });
+  updateProg();
+}
+document.getElementById('list').addEventListener('click',e=>{
+  const tg=e.target.closest('.tg'); if(!tg)return;
+  const id=tg.parentElement.getAttribute('data-id');
+  const ns=tg.getAttribute('data-s');
+  GROUPS.find(x=>x.id===id).state=ns;
+  render();
+  if(ns!=='tbd'){const card=document.querySelector('.match[data-id="'+id+'"]'); if(card)card.classList.add(ns==='win'?'swept':'swept-lose');}
+});
+
+let prevVerdict=null;
+function updateProg(){
+  const s=GROUPS.filter(g=>g.state==='win').length;
+  const f=GROUPS.filter(g=>g.state==='lose').length;
+  const t=GROUPS.filter(g=>g.state==='tbd').length;
+  animTo(document.getElementById('cS'),s);
+  animTo(document.getElementById('cF'),f);
+  animTo(document.getElementById('cT'),t);
+  const dots=document.getElementById('pdots'); dots.innerHTML='';
+  for(let i=0;i<NEED;i++){const d=document.createElement('div');d.className='pdot'+(i<s?' on':'');dots.appendChild(d);}
+  const box=document.getElementById('prog'),big=document.getElementById('progBig'),msg=document.getElementById('progMsg');
+  let verdict;
+  if(s>=NEED){
+    verdict='good'; box.className='good'; big.textContent='32강 진출 확정! 🎉';
+    msg.innerHTML=`한국 편 결과 <b>${s}개</b> — 필요한 <b>${NEED}개</b>를 채웠습니다.`;
+  }else if(f>=6-NEED+1){
+    verdict='bad'; box.className='bad'; big.textContent='아쉽게 탈락 😢';
+    msg.innerHTML=`실패 <b>${f}개</b> — 남은 경기를 다 이겨도 성공 ${NEED}개를 못 채웁니다.`;
+  }else{
+    verdict='wait'; box.className='wait'; big.textContent=`성공 ${s} / ${NEED} 필요`;
+    msg.innerHTML=`진출까지 <b>${NEED-s}개</b> 더 필요 · 남은 미정 ${t}경기 중에서 나오면 됩니다.`;
+  }
+  updateSticky(s,f,verdict);
+  renderRank();
+  if(verdict!==prevVerdict){
+    if(prevVerdict!==null && verdict==='good') celebrate();
+    if(prevVerdict!==null && verdict==='bad')  defeat();
+    prevVerdict=verdict;
+  }
+}
+
+/* 🏆 3위 8팀 진출 현황 (A안 — 성공/실패 기반 근사) */
+function renderRank(){
+  const lose=GROUPS.filter(g=>g.state==='lose');   // 한국 위(추월)
+  const win =GROUPS.filter(g=>g.state==='win');    // 한국 아래
+  const tbd =GROUPS.filter(g=>g.state==='tbd');    // 미정
+  const aboveEx=[...lockedThirds].filter(aboveKR).sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+  const belowEx=lockedThirds.filter(t=>!aboveKR(t));
+  const ranked=[];
+  aboveEx.forEach(t=>ranked.push({g:t.g,name:t.name,pts:t.pts,gd:t.gd,side:'up'}));
+  lose.forEach(g=>ranked.push({g:g.g,name:g.g+' 3위',side:'up',approx:true}));
+  const koreaRank=ranked.length+1;
+  ranked.push({g:'A조',name:'대한민국',pts:3,gd:-1,side:'kr'});
+  belowEx.forEach(t=>ranked.push({g:t.g,name:t.name,pts:t.pts,gd:t.gd,side:'dn'}));
+  win.forEach(g=>ranked.push({g:g.g,name:g.g+' 3위',side:'dn',approx:true}));
+
+  let html='';
+  ranked.forEach((r,i)=>{
+    const no=i+1;
+    if(no===9) html+=`<div class="rk-cut"><span class="ln"></span>8위 진출 컷<span class="ln"></span></div>`;
+    const pts = r.approx ? '—' : `${r.pts}점 · ${r.gd>0?'+':''}${r.gd}`;
+    const tag = r.side==='up' ? '<span class="tag up">한국 위</span>'
+              : r.side==='dn' ? '<span class="tag dn">한국 아래</span>'
+              : '<span class="tag krtag">대한민국</span>';
+    html+=`<div class="rk-row ${r.side==='kr'?'kr':''}">
+      <span class="rkno">${no}</span><span class="gb">${r.g}</span>
+      <span class="nm">${r.name}</span><span class="pts">${pts}</span>${tag}</div>`;
+  });
+  if(tbd.length){
+    html+=`<div class="rk-zone">⏳ 결과 대기 — 위/아래 미정 (${tbd.length}경기)</div>`;
+    tbd.forEach(g=>{ html+=`<div class="rk-row"><span class="rkno">·</span><span class="gb">${g.g}</span>
+      <span class="nm">${g.g} 3위</span><span class="pts">—</span><span class="tag pend">대기</span></div>`; });
+  }
+  document.getElementById('rankList').innerHTML=html;
+
+  const aboveCount=koreaRank-1, s=win.length, f=lose.length;
+  const vd=document.getElementById('rankVerdict');
+  if(s>=NEED){
+    vd.className='rk-verdict in';
+    vd.innerHTML=`🎉 <b>진출 확정</b> · 현재 잠정 <b>${koreaRank}위</b> (한국 위 ${aboveCount}팀)`;
+  }else if(f>=6-NEED+1){
+    vd.className='rk-verdict out';
+    vd.innerHTML=`❌ <b>탈락 확정</b> · 현재 잠정 <b>${koreaRank}위</b> (한국 위 ${aboveCount}팀)`;
+  }else{
+    vd.className='rk-verdict mid';
+    vd.innerHTML=`현재 잠정 <b>${koreaRank}위</b> · 아직 <b>경합 중</b> (확정 아님)<br>성공 <b>${NEED-s}개</b> 더 나오면 진출 확정`;
+  }
+}
+
+/* (2) 숫자 롤업 */
+function animTo(el,to){
+  const from=parseInt(el.textContent)||0;
+  if(from===to){el.textContent=to;return;}
+  const dur=460,t0=performance.now();
+  function fr(now){let k=Math.min(1,(now-t0)/dur);k=1-Math.pow(1-k,3);
+    el.textContent=Math.round(from+(to-from)*k); if(k<1)requestAnimationFrame(fr);}
+  requestAnimationFrame(fr);
+}
+/* (6) 스티키 바 */
+function updateSticky(s,f,verdict){
+  const sd=document.getElementById('sDots'); sd.innerHTML='';
+  for(let i=0;i<NEED;i++){const d=document.createElement('div');d.className='sd'+(i<s?' on':'');sd.appendChild(d);}
+  document.getElementById('sTxt').textContent=`성공 ${s} / ${NEED}`;
+  const tag=document.getElementById('sTag'); tag.className='stag '+verdict;
+  tag.textContent= verdict==='good'?'진출 확정':verdict==='bad'?'탈락':`${NEED-s}개 더`;
+}
+/* (1) 진출 확정 연출 / 탈락 페이드 */
+function celebrate(){
+  launchConfetti();
+  [document.getElementById('prog'),document.querySelector('.hero')].forEach(el=>{
+    el.classList.remove('celebrate'); void el.offsetWidth; el.classList.add('celebrate');
+    setTimeout(()=>el.classList.remove('celebrate'),1950);
+  });
+}
+function defeat(){
+  const w=document.querySelector('.wrap');
+  w.classList.remove('defeat'); void w.offsetWidth; w.classList.add('defeat');
+  setTimeout(()=>w.classList.remove('defeat'),1550);
+}
+function launchConfetti(){
+  const c=document.getElementById('confetti'),x=c.getContext('2d');
+  c.style.display='block'; c.width=innerWidth; c.height=innerHeight;
+  const cols=['#CD2E3A','#0047A0','#ffce3d','#0a8f4f','#e84855','#1565d8'];
+  const P=[];
+  for(let i=0;i<150;i++)P.push({x:innerWidth/2+(Math.random()-.5)*160,y:innerHeight*0.30,
+    vx:(Math.random()-.5)*11,vy:Math.random()*-13-3,g:.34+Math.random()*.22,
+    r:4+Math.random()*5,rot:Math.random()*6.3,vr:(Math.random()-.5)*.5,col:cols[i%cols.length]});
+  let t0=null;
+  function frame(ts){ if(!t0)t0=ts; const el=ts-t0;
+    x.clearRect(0,0,c.width,c.height);
+    P.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;
+      x.save();x.translate(p.x,p.y);x.rotate(p.rot);x.globalAlpha=Math.max(0,1-el/2300);
+      x.fillStyle=p.col;x.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.7);x.restore();});
+    if(el<2300)requestAnimationFrame(frame); else {x.clearRect(0,0,c.width,c.height);c.style.display='none';}
+  }
+  requestAnimationFrame(frame);
+}
+
+/* (10) 결과 이미지 저장 + 링크 공유 */
+function verdictInfo(){
+  const s=GROUPS.filter(g=>g.state==='win').length,f=GROUPS.filter(g=>g.state==='lose').length,t=6-s-f;
+  let v,vc; if(s>=NEED){v='32강 진출 확정';vc='#0a8f4f';}
+  else if(f>=4){v='탈락';vc='#CD2E3A';} else {v='성공 '+s+' / 3 · 진행 중';vc='#c98a12';}
+  return {s,f,t,v,vc};
+}
+function rr(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath();}
+function buildResultCanvas(){
+  const {s,f,t,v,vc}=verdictInfo(),W=1080,H=1380,c=document.createElement('canvas');c.width=W;c.height=H;
+  const x=c.getContext('2d');
+  const bg=x.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#ffffff');bg.addColorStop(1,'#eef2f8');x.fillStyle=bg;x.fillRect(0,0,W,H);
+  x.fillStyle='#CD2E3A';x.fillRect(0,0,W,14); x.fillStyle='#0047A0';x.fillRect(0,14,W,8);
+  x.textAlign='center';
+  x.fillStyle='#0047A0';x.font='900 30px sans-serif';x.fillText('FIFA WORLD CUP 2026 · 32강 경우의 수',W/2,118);
+  x.fillStyle='#16213a';x.font='900 68px sans-serif';x.fillText('대한민국, 16강 갈까?',W/2,202);
+  x.fillStyle=vc;x.font='900 66px sans-serif';x.fillText(v,W/2,316);
+  const cols=[['성공',s,'#0a8f4f'],['실패',f,'#CD2E3A'],['미정',t,'#9aa4bb']];
+  cols.forEach((cc,i)=>{const cx=W/2+(i-1)*306;
+    x.fillStyle='#f4f6fb';rr(x,cx-130,396,260,176,22);x.fill();x.strokeStyle='#e3e8f2';x.lineWidth=2;x.stroke();
+    x.fillStyle=cc[2];x.font='900 92px sans-serif';x.fillText(cc[1],cx,504);
+    x.fillStyle='#5a6781';x.font='800 30px sans-serif';x.fillText(cc[0],cx,556);});
+  let y=692;const mk={win:['승','#0a8f4f'],lose:['패','#CD2E3A'],tbd:['·','#9aa4bb']};
+  GROUPS.forEach(g=>{const m=mk[g.state];
+    x.fillStyle='#ffffff';rr(x,80,y-46,W-160,80,16);x.fill();x.strokeStyle='#e3e8f2';x.lineWidth=2;x.stroke();
+    x.textAlign='center';x.fillStyle=m[1];x.font='900 40px sans-serif';x.fillText(m[0],128,y+2);
+    x.textAlign='left';x.fillStyle='#16213a';x.font='800 33px sans-serif';x.fillText(g.g+'  '+g.matchLabel,182,y);
+    x.textAlign='right';x.fillStyle='#c98a12';x.font='800 27px sans-serif';x.fillText(g.date+' '+g.kst+' KST',W-110,y);
+    y+=96;});
+  x.textAlign='center';x.fillStyle='#9aa4bb';x.font='700 25px sans-serif';
+  x.fillText('남은 6경기 중 3개만 한국 편이면 32강 진출 · 한국시간 기준',W/2,H-46);
+  return c;
+}
+function saveImage(){
+  buildResultCanvas().toBlob(b=>{const u=URL.createObjectURL(b);const a=document.createElement('a');
+    a.href=u;a.download='korea-worldcup-32.png';document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(u),1200);});
+}
+function shareLink(){
+  const text='🇰🇷 대한민국 32강 진출 경우의 수 — 남은 6경기 중 3개만 한국 편이면 진출!';
+  (async()=>{
+    if(navigator.share){
+      try{ await navigator.share(APP_URL?{title:'대한민국 32강 경우의 수',text,url:APP_URL}:{title:'대한민국 32강 경우의 수',text}); return; }
+      catch(e){ if(e&&e.name==='AbortError')return; }
+    }
+    const payload = APP_URL ? text+'\n'+APP_URL : text;
+    try{ await navigator.clipboard.writeText(payload);
+      alert(APP_URL?('앱 링크를 복사했어요!\n'+APP_URL):'아직 배포 전이라 링크가 없어요.\n웹에 올린 뒤 그 주소에서 공유하면 링크가 자동으로 들어갑니다.'); return; }catch(e){}
+    prompt('복사해서 공유하세요', payload);
+  })();
+}
+
+function resetAll(){GROUPS.forEach(g=>g.state='tbd');prevVerdict=null;render();}
+render();
+/* (6) 진행률 카드가 화면 위로 '완전히' 사라진 뒤에만 상단바 표시 → 제목 안 가림 */
+const _prog=document.getElementById('prog'),_sticky=document.getElementById('sticky');
+function _onScroll(){ const r=_prog.getBoundingClientRect(); _sticky.classList.toggle('show', r.bottom < 6); }
+addEventListener('scroll',_onScroll,{passive:true});
+addEventListener('resize',_onScroll); _onScroll();
+</script>
+</body>
+</html>
