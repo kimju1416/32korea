@@ -325,8 +325,8 @@
 
   <div class="foot">
     12개 조 순위·결과 Wikipedia 검증 (2026.06.26 기준) · 시간은 한국시간(KST)<br>
-    경기 결과가 나오면 성공/실패를 눌러 체크하세요.
-    <div class="nostalgia">2002년 월드컵 그리워 ㅠㅠ</div>
+    경기 결과가 나오면 성공/실패를 눌러 체크하세요. (입력은 이 기기에 자동 저장 — 다시 안 눌러도 됩니다)
+    <div class="nostalgia">홍명보 OUT</div>
     <a class="iglink" href="https://instagram.com/kimju.zip" target="_blank" rel="noopener">📷 @kimju.zip</a>
   </div>
 </div>
@@ -456,6 +456,7 @@ document.getElementById('list').addEventListener('click',e=>{
   const ns=tg.getAttribute('data-s');
   GROUPS.find(x=>x.id===id).state=ns;
   render();
+  saveStates();
   if(ns!=='tbd'){const card=document.querySelector('.match[data-id="'+id+'"]'); if(card)card.classList.add(ns==='win'?'swept':'swept-lose');}
 });
 
@@ -639,7 +640,12 @@ function shareLink(){
   })();
 }
 
-function resetAll(){GROUPS.forEach(g=>g.state='tbd');prevVerdict=null;render();}
+/* 결과 자동 저장/복원 — 같은 기기·브라우저면 다시 안 눌러도 유지됨 */
+const LS_KEY='wc32korea_v1';
+function saveStates(){ try{const m={};GROUPS.forEach(g=>m[g.id]=g.state);localStorage.setItem(LS_KEY,JSON.stringify(m));}catch(e){} }
+function loadStates(){ try{const m=JSON.parse(localStorage.getItem(LS_KEY)||'{}');GROUPS.forEach(g=>{if(['win','lose','tbd'].includes(m[g.id]))g.state=m[g.id];});}catch(e){} }
+function resetAll(){GROUPS.forEach(g=>g.state='tbd');prevVerdict=null;render();saveStates();}
+loadStates();
 render();
 /* (6) 진행률 카드가 화면 위로 '완전히' 사라진 뒤에만 상단바 표시 → 제목 안 가림 */
 const _prog=document.getElementById('prog'),_sticky=document.getElementById('sticky');
