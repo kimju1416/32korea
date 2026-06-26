@@ -257,8 +257,8 @@
 
   <div class="hero">
     <svg class="htg" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#fff"/><g transform="rotate(-90 50 50)"><path d="M50,5 a45,45 0 0 1 0,90 a22.5,22.5 0 0 1 0,-45 a22.5,22.5 0 0 0 0,-45 z" fill="#CD2E3A"/><path d="M50,5 a45,45 0 0 0 0,90 a22.5,22.5 0 0 0 0,-45 a22.5,22.5 0 0 1 0,-45 z" fill="#0047A0"/></g></svg>
-    <div class="big">남은 6경기 중<br><b>단 3개</b>만 한국 편이면<br>32강 진출!</div>
-    <div class="sub">한국은 A조 3위로 종료 — 이미 위에 4팀이라, 6경기 중 3개만 우리 편이면 8위 안에 듭니다.</div>
+    <div class="big">남은 5경기 중<br><b>단 3개</b>만 한국 편이면<br>32강 진출!</div>
+    <div class="sub">한국은 A조 3위로 종료 — 이미 위에 5팀이라, 남은 5경기 중 3개만 우리 편이면 8위 안에 듭니다.</div>
   </div>
 
   <div id="prog" class="wait">
@@ -268,7 +268,7 @@
     <div class="counts">
       <div class="cnt s"><div class="n" id="cS">0</div><div class="l">성공 · 한국 편</div></div>
       <div class="cnt f"><div class="n" id="cF">0</div><div class="l">실패 · 추월당함</div></div>
-      <div class="cnt t"><div class="n" id="cT">6</div><div class="l">미정 · 경기 전</div></div>
+      <div class="cnt t"><div class="n" id="cT">5</div><div class="l">미정 · 경기 전</div></div>
     </div>
     <div id="progMsg"></div>
   </div>
@@ -276,9 +276,10 @@
   <div class="card">
     <div class="why">
       <span class="q">❓ 왜 하필 3개일까?</span>
-      한국(승점3·−1) 위로 이미 끝난 3위 팀이 <b>4팀</b>(보스니아·파라과이·에콰도르·스웨덴).
-      3위 8팀이 진출하니, 남은 6개 조 중 한국을 넘는 팀이 <b>3팀 이하</b>여야 합니다 →
+      한국(승점3·−1) 위로 이미 끝난 3위 팀이 <b>5팀</b>(보스니아·파라과이·에콰도르·스웨덴·세네갈).
+      3위 8팀이 진출하니, 남은 5개 조 중 한국을 넘는 팀이 <b>2팀 이하</b>여야 합니다 →
       바꿔 말해 <b>3경기 이상에서 한국에 유리한 결과</b>가 나오면 진출.
+      <br><b style="color:var(--kr-red)">📌 6/27 세네갈 5-0 이라크 승</b> → I조 3위 세네갈이 한국 위로 확정.
     </div>
     <button class="btn" onclick="resetAll()">↺ 전부 ‘미정’으로 초기화</button>
     <div class="sharebtns">
@@ -341,14 +342,9 @@ function aboveKR(t){
   if(t.gd!==KR.gd)  return t.gd>KR.gd;
   return t.gf>KR.gf;
 }
-const lockedAbove=4;
-const NEED=3;
+/* lockedAbove·NEED는 데이터 확정 후 아래에서 자동 계산 */
 
 const GROUPS=[
- {id:'I',g:'I조',date:'6월 27일',dow:'토',kst:'04:00',state:'tbd',
-  teams:{FRA:{name:'프랑스',pts:6,gf:6,ga:1}, NOR:{name:'노르웨이',pts:6,gf:7,ga:3},
-         SEN:{name:'세네갈',pts:0,gf:3,ga:6}, IRQ:{name:'이라크',pts:0,gf:1,ga:7}},
-  fx:[{h:'NOR',a:'FRA'},{h:'SEN',a:'IRQ'}]},
  {id:'H',g:'H조',date:'6월 27일',dow:'토',kst:'09:00',state:'tbd',
   teams:{ESP:{name:'스페인',pts:4,gf:4,ga:0}, URU:{name:'우루과이',pts:2,gf:3,ga:3},
          CPV:{name:'카보베르데',pts:2,gf:2,ga:2}, SAU:{name:'사우디',pts:1,gf:1,ga:5}},
@@ -371,14 +367,18 @@ const GROUPS=[
   fx:[{h:'ALG',a:'AUT'},{h:'JOR',a:'ARG'}]},
 ];
 
-/* 이미 끝난 조(A~F) 3위 팀 — 정확한 값 (Wikipedia 검증) */
+/* 이미 끝난 조 3위 팀 — 정확한 값 (Wikipedia 검증) */
 const lockedThirds=[
   {g:'B조',name:'보스니아',pts:4,gd:-1,gf:5},
   {g:'D조',name:'파라과이',pts:4,gd:-2,gf:2},
   {g:'E조',name:'에콰도르',pts:4,gd:0, gf:2},
   {g:'F조',name:'스웨덴',  pts:4,gd:0, gf:7},
+  {g:'I조',name:'세네갈',  pts:3,gd:2, gf:8},   /* 6/27 세네갈 5-0 이라크 → 한국 위 확정 */
   {g:'C조',name:'스코틀랜드',pts:3,gd:-3,gf:1},
 ];
+/* 한국 위 확정 팀 수 / 남은 경기 중 필요한 성공 수 — 자동 계산 */
+const lockedAbove=lockedThirds.filter(aboveKR).length;   /* =5 */
+const NEED=GROUPS.length-(7-lockedAbove);                 /* 남은 경기 중 필요 성공 = 5-(7-5)=3 */
 
 function thirdOf(g){
   const t={};
@@ -395,7 +395,7 @@ function safeWith(g){ return !aboveKR(thirdOf(g)); }
 function favWin(g,i){const f=g.fx[i],H=g.teams[f.h],A=g.teams[f.a]; if(H.pts>=A.pts){f.hs=1;f.as=0;}else{f.hs=0;f.as=1;}}
 function setSc(g,i,h,a){g.fx[i].hs=h;g.fx[i].as=a;}
 
-const DEC={I:1,H:1,G:0,L:1,K:1,J:0};
+const DEC={H:1,G:0,L:1,K:1,J:0};
 function favorableCondition(g){
   const snap=g.fx.map(f=>({hs:f.hs,as:f.as}));
   const dec=DEC[g.id];
@@ -475,7 +475,7 @@ function updateProg(){
   if(s>=NEED){
     verdict='good'; box.className='good'; big.textContent='32강 진출 확정! 🎉';
     msg.innerHTML=`한국 편 결과 <b>${s}개</b> — 필요한 <b>${NEED}개</b>를 채웠습니다.`;
-  }else if(f>=6-NEED+1){
+  }else if(f>=GROUPS.length-NEED+1){
     verdict='bad'; box.className='bad'; big.textContent='아쉽게 탈락 😢';
     msg.innerHTML=`실패 <b>${f}개</b> — 남은 경기를 다 이겨도 성공 ${NEED}개를 못 채웁니다.`;
   }else{
@@ -530,7 +530,7 @@ function renderRank(){
   if(s>=NEED){
     vd.className='rk-verdict in';
     vd.innerHTML=`🎉 <b>진출 확정</b> · 현재 잠정 <b>${koreaRank}위</b> (한국 위 ${aboveCount}팀)`;
-  }else if(f>=6-NEED+1){
+  }else if(f>=GROUPS.length-NEED+1){
     vd.className='rk-verdict out';
     vd.innerHTML=`❌ <b>탈락 확정</b> · 현재 잠정 <b>${koreaRank}위</b> (한국 위 ${aboveCount}팀)`;
   }else{
