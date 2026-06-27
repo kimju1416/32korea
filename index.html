@@ -107,6 +107,7 @@
   .match.locked .mhead .t{background:#eef0f3;color:var(--sub);border-color:var(--card-line)}
   .lockbadge{margin-top:13px;text-align:center;font-size:13.5px;font-weight:900;color:var(--kr-red);
     background:var(--bad-bg);border:1.5px solid var(--bad-line);border-radius:12px;padding:12px}
+  .lockbadge.win{color:var(--good);background:var(--good-bg);border-color:var(--good-line)}
   .mhead{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;border-bottom:1px solid var(--card-line);
     background:linear-gradient(90deg,rgba(0,71,160,.05),rgba(205,46,58,.03))}
   .mhead .gtag{font-size:11.5px;font-weight:900;background:linear-gradient(135deg,var(--kr-blue),var(--kr-blue2));
@@ -261,8 +262,8 @@
 
   <div class="hero">
     <svg class="htg" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#fff"/><g transform="rotate(-90 50 50)"><path d="M50,5 a45,45 0 0 1 0,90 a22.5,22.5 0 0 1 0,-45 a22.5,22.5 0 0 0 0,-45 z" fill="#CD2E3A"/><path d="M50,5 a45,45 0 0 0 0,90 a22.5,22.5 0 0 0 0,-45 a22.5,22.5 0 0 1 0,-45 z" fill="#0047A0"/></g></svg>
-    <div class="big">남은 6경기 중<br><b>단 3개</b>만 한국 편이면<br>32강 진출!</div>
-    <div class="sub">한국은 A조 3위로 종료 — 이미 위에 4팀이라, 6경기 중 3개만 우리 편이면 8위 안에 듭니다.</div>
+    <div class="big">남은 4경기 중<br><b>2개</b>만 한국 편이면<br>32강 진출!</div>
+    <div class="sub">한국 A조 3위 — 남은 경기 결과를 체크하면 진출 여부가 실시간 계산됩니다.</div>
   </div>
 
   <div id="prog" class="wait">
@@ -353,7 +354,7 @@ const GROUPS=[
   teams:{FRA:{name:'프랑스',pts:6,gf:6,ga:1}, NOR:{name:'노르웨이',pts:6,gf:7,ga:3},
          SEN:{name:'세네갈',pts:0,gf:3,ga:6}, IRQ:{name:'이라크',pts:0,gf:1,ga:7}},
   fx:[{h:'NOR',a:'FRA'},{h:'SEN',a:'IRQ'}]},
- {id:'H',g:'H조',date:'6월 27일',dow:'토',kst:'09:00',state:'tbd',
+ {id:'H',g:'H조',date:'6월 27일',dow:'토',kst:'09:00',state:'win',locked:true,result:'스페인 1 : 0 우루과이',lockNote:'스페인 승 → H조 3위(우루과이/카보베르데) 2점 이하로 한국 아래 — 성공',
   teams:{ESP:{name:'스페인',pts:4,gf:4,ga:0}, URU:{name:'우루과이',pts:2,gf:3,ga:3},
          CPV:{name:'카보베르데',pts:2,gf:2,ga:2}, SAU:{name:'사우디',pts:1,gf:1,ga:5}},
   fx:[{h:'CPV',a:'SAU'},{h:'URU',a:'ESP'}]},
@@ -438,17 +439,22 @@ function render(){
       list.appendChild(band);
     }
     const el=document.createElement('div'); el.className='match '+(g.state==='tbd'?'':g.state)+(g.locked?' locked':''); el.dataset.id=g.id;
-    const body = g.locked
-      ? `<div class="vs">${g.result}</div>
-        <div class="cond" style="background:var(--bad-bg);border-color:var(--bad-line)"><span class="k" style="color:var(--kr-red)">경기 결과 · 확정</span><span class="v">${g.lockNote}</span></div>
-        <div class="lockbadge">🔒 실패 확정 · 한국 위</div>`
-      : `<div class="vs">${g.matchLabel.replace(' vs ','<span class="x">VS</span>')}</div>
+    let body;
+    if(g.locked){
+      const win=g.state==='win';
+      const bg=win?'var(--good-bg)':'var(--bad-bg)', ln=win?'var(--good-line)':'var(--bad-line)', tc=win?'var(--good)':'var(--kr-red)';
+      body=`<div class="vs">${g.result}</div>
+        <div class="cond" style="background:${bg};border-color:${ln}"><span class="k" style="color:${tc}">경기 결과 · 확정</span><span class="v">${g.lockNote}</span></div>
+        <div class="lockbadge ${win?'win':''}">${win?'✅ 성공 확정 · 한국 아래':'🔴 실패 확정 · 한국 위'}</div>`;
+    } else {
+      body=`<div class="vs">${g.matchLabel.replace(' vs ','<span class="x">VS</span>')}</div>
         <div class="cond"><span class="k">한국에 유리한 결과</span><span class="v">${g.condText}</span></div>
         <div class="toggle" data-id="${g.id}">
           <div class="tg win ${g.state==='win'?'sel':''}" data-s="win">성공<small>한국 편</small></div>
           <div class="tg lose ${g.state==='lose'?'sel':''}" data-s="lose">실패<small>추월</small></div>
           <div class="tg tbd ${g.state==='tbd'?'sel':''}" data-s="tbd">미정<small>경기 전</small></div>
         </div>`;
+    }
     el.innerHTML=`
       <div class="sweep"></div>
       <div class="mhead"><span class="gtag">${g.g}</span><span class="t">${g.locked?'✅':'🕐'} ${g.kst} KST${g.locked?' · 종료':''}</span></div>
@@ -467,8 +473,28 @@ document.getElementById('list').addEventListener('click',e=>{
   if(ns!=='tbd'){const card=document.querySelector('.match[data-id="'+id+'"]'); if(card)card.classList.add(ns==='win'?'swept':'swept-lose');}
 });
 
+/* 메인 헤드라인 — 현재 상태로 실시간 계산 (남은 N경기 중 M개) */
+function updateHero(){
+  const s=GROUPS.filter(g=>g.state==='win').length;
+  const f=GROUPS.filter(g=>g.state==='lose').length;
+  const remaining=GROUPS.filter(g=>g.state==='tbd').length;
+  const big=document.querySelector('.hero .big'), sub=document.querySelector('.hero .sub');
+  if(s>=NEED){
+    big.innerHTML='🎉<br><b>32강 진출 확정!</b>';
+    sub.innerHTML=`성공 ${s}개 — 진출 라인을 통과했습니다! 🇰🇷`;
+  }else if(f>=GROUPS.length-NEED+1){
+    big.innerHTML='남은 경기를 다 이겨도<br><b style="-webkit-text-fill-color:#fff;color:#fff">진출 불가 😢</b>';
+    sub.innerHTML=`실패 ${f}개 — 아쉽게 탈락입니다.`;
+  }else{
+    const need=NEED-s;
+    big.innerHTML=`남은 ${remaining}경기 중<br><b>${need}개</b>만 한국 편이면<br>32강 진출!`;
+    sub.innerHTML=`현재 성공 ${s} · 실패 ${f} · 미정 ${remaining} — 남은 ${remaining}경기 중 ${need}개만 우리 편이면 8위 안!`;
+  }
+}
+
 let prevVerdict=null;
 function updateProg(){
+  updateHero();
   const s=GROUPS.filter(g=>g.state==='win').length;
   const f=GROUPS.filter(g=>g.state==='lose').length;
   const t=GROUPS.filter(g=>g.state==='tbd').length;
